@@ -10,3 +10,12 @@ test("receives commands test", () => {
   r.move(c.sendCommands(initalCommands));
   expect(r.getCommands()).toEqual(initalCommands.split(" "));
 });
+
+test("rover wraps around left edge", () => {
+  const initalPoint: point = { x: 1, y: 1 };
+  const initalCommands = "l l";
+  const r: rover = new rover(initalPoint, "N");
+  const c: controller = new controller();
+  r.move(c.sendCommands(initalCommands));
+  expect(r.getPosition().x).toEqual(3);
+});
