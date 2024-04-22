@@ -1,6 +1,4 @@
-import {expect, test} from "bun:test"
-import { controller } from "../src/controller"
+import { expect, test } from "bun:test";
+import { Controller } from "../src/Controller";
 
-test("receives commands", () => {
-    
-})
+test("receives commands", () => {});

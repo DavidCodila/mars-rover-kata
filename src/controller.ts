@@ -1,4 +1,4 @@
-export class controller {
+export class Controller {
   sendCommands(commands: string) {
     return commands.split(" ");
   }

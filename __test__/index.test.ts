@@ -1,21 +1,24 @@
 import { expect, test } from "bun:test";
-import { controller } from "../src/controller";
-import { rover, type point } from "../src/rover";
+import { Controller } from "../src/Controller";
+import { Rover, type point } from "../src/Rover";
+import { MarsMap } from "../src/MarsMap";
 
 test("receives commands test", () => {
   const initalPoint: point = { x: 1, y: 1 };
   const initalCommands = "f f b";
-  const r: rover = new rover(initalPoint, "N");
-  const c: controller = new controller();
-  r.move(c.sendCommands(initalCommands));
-  expect(r.getCommands()).toEqual(initalCommands.split(" "));
+  const rover: Rover = new Rover(initalPoint, "N");
+  const controller: Controller = new Controller();
+  rover.move(controller.sendCommands(initalCommands));
+  expect(rover.getCommands()).toEqual(initalCommands.split(" "));
 });
 
-test("rover wraps around left edge", () => {
+test("Rover wraps around left edge", () => {
   const initalPoint: point = { x: 1, y: 1 };
   const initalCommands = "l l";
-  const r: rover = new rover(initalPoint, "N");
-  const c: controller = new controller();
-  r.move(c.sendCommands(initalCommands));
-  expect(r.getPosition().x).toEqual(3);
+  const rover: Rover = new Rover(initalPoint, "N");
+  const controller: Controller = new Controller();
+  rover.move(controller.sendCommands(initalCommands));
+  const marsMap: MarsMap = new MarsMap("3 3");
+  console.log(marsMap.getMap());
+  expect(rover.getPosition().x).toEqual(3);
 });
