@@ -3,5 +3,7 @@ export abstract class MapTemplate {
   getMapRows(): number {
     return 0;
   }
-  getMapColumns() {}
+  getMapColumns(): number {
+    return 0;
+  }
 }

@@ -17,7 +17,7 @@ export class MarsMap extends MapTemplate {
   override getMapRows(): number {
     return this.rows;
   }
-  override getMapColumns() {
+  override getMapColumns(): number {
     return this.columns;
   }
   create2dMap() {

@@ -27,8 +27,12 @@ export class Rover {
     this.commands = commandToMove;
     for (var commandIndex in this.commands) {
       var command = this.commands[commandIndex];
-      if (command === "f") this.position.y++;
-      else if (command === "b") this.position.y--;
+      if (command === "f") {
+        if (this.position.y !== this.map.getMapRows() - 1) this.position.y++;
+        else {
+          this.position.y = 0;
+        }
+      } else if (command === "b") this.position.y--;
       else if (command === "r") {
         if (this.position.x !== this.map.getMapRows() - 1) this.position.x++;
         else {
