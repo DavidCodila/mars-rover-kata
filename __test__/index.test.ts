@@ -20,3 +20,12 @@ test("Rover wraps around left edge", () => {
   rover.move(controller.sendCommands(initalCommands));
   expect(rover.getPosition().x).toEqual(3);
 });
+
+test("Rover wraps around right edge", () => {
+  const initalPoint: point = { x: 1, y: 1 };
+  const initalCommands = "r r";
+  const rover: Rover = new Rover(initalPoint, "N", new MarsMap("3 3"));
+  const controller: Controller = new Controller();
+  rover.move(controller.sendCommands(initalCommands));
+  expect(rover.getPosition().x).toEqual(0);
+});
