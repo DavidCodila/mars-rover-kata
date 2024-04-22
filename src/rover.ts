@@ -5,6 +5,7 @@ export class Rover {
   private orientation: string = "N";
   private commands: string[];
   private map: MapTemplate;
+  private objectDetected: boolean;
   constructor(
     initalPosition: point,
     initalorientation: string,
@@ -14,6 +15,8 @@ export class Rover {
     this.orientation = initalorientation;
     this.commands = [""];
     this.map = map;
+    if (map.getMapColumns() === 4) map.createObstacles();
+    this.objectDetected = false;
   }
 
   getPosition() {
@@ -25,32 +28,61 @@ export class Rover {
   getCommands(): string[] {
     return this.commands;
   }
-  move(commandToMove: string[]) {
+  move(commandToMove: string[]): string {
     this.commands = commandToMove;
     for (var commandIndex in this.commands) {
-      var command = this.commands[commandIndex];
-      this.moveRoverRelativeTo(command);
+      if (this.objectDetected)
+        return "Hit object on " + commandIndex + "command index";
+      else {
+        var command = this.commands[commandIndex];
+        this.moveRoverRelativeTo(command);
+      }
     }
+    return "Move successful";
   }
   moveRoverRelativeTo(command: string) {
     if (moveForward(command)) {
-      if (this.isNotAtTopOfMap()) this.position.y++;
-      else {
-        this.position.y = 0;
+      if (this.isNotAtTopOfMap()) {
+        if (this.map.hasObstacle(this.position.x, this.position.y + 1))
+          this.objectDetected = true;
+        else this.position.y++;
+      } else {
+        if (this.map.hasObstacle(this.position.x, 0))
+          this.objectDetected = true;
+        else this.position.y = 0;
       }
     } else if (moveBack(command)) {
-      if (this.isNotAtBottomOfMap()) this.position.y--;
-      else {
-        this.moveRoverToTopOfMap();
+      if (this.isNotAtBottomOfMap()) {
+        if (this.map.hasObstacle(this.position.x, this.position.y - 1))
+          this.objectDetected = true;
+        else this.position.y--;
+      } else {
+        var endOfMap = this.map.getMapColumns() - 1;
+        if (this.map.hasObstacle(this.position.x, endOfMap))
+          this.objectDetected = true;
+        else this.moveRoverToTopOfMap();
       }
     } else if (moveRight(command)) {
-      if (this.isNotAtRightEndOfMap()) this.position.x++;
-      else {
-        this.position.x = 0;
+      if (this.isNotAtRightEndOfMap()) {
+        if (this.map.hasObstacle(this.position.x + 1, this.position.y))
+          this.objectDetected = true;
+        else this.position.x++;
+      } else {
+        if (this.map.hasObstacle(0, this.position.y))
+          this.objectDetected = true;
+        else this.position.x = 0;
       }
     } else if (moveLeft(command)) {
-      if (this.isNotAtLeftEndOfMap()) this.position.x--;
-      else this.moveRoverToRightEndOfMap();
+      if (this.isNotAtLeftEndOfMap()) {
+        if (this.map.hasObstacle(this.position.y, this.position.x - 1))
+          this.objectDetected = true;
+        else this.position.x--;
+      } else {
+        var endOfMap = this.map.getMapRows() - 1;
+        if (this.map.hasObstacle(endOfMap, this.position.y))
+          this.objectDetected = true;
+        else this.moveRoverToRightEndOfMap();
+      }
     } else {
       console.log("Error in move command: " + command);
     }

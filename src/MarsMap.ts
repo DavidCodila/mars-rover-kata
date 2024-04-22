@@ -28,4 +28,11 @@ export class MarsMap extends MapTemplate {
       }
     }
   }
+  public override createObstacles(): void {
+    this.map[3][0] = 1;
+  }
+  override hasObstacle(row: number, column: number): boolean {
+    if (this.map[row][column] === 1) return true;
+    return false;
+  }
 }

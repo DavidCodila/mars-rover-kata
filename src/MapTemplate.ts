@@ -6,4 +6,8 @@ export abstract class MapTemplate {
   getMapColumns(): number {
     return 0;
   }
+  hasObstacle(row: number, column: number): boolean {
+    return false;
+  }
+  createObstacles(): void {}
 }

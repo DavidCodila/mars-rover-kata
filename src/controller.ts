@@ -8,10 +8,11 @@ export class Controller {
 }
 
 function checkCommandSyntax(commandArray: string[]): boolean {
+  var error: boolean = false;
   commandArray.forEach((command) => {
-    if (!isaMoveCommand(command)) return true;
+    if (!isaMoveCommand(command)) error = true;
   });
-  return false;
+  return error;
 }
 
 function isaMoveCommand(input: string): boolean {
