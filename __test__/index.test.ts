@@ -3,11 +3,11 @@ import { Controller } from "../src/Controller";
 import { Rover, type point } from "../src/Rover";
 import { MarsMap } from "../src/MarsMap";
 
-const initalPoint: point = { x: 1, y: 1 };
 const controller: Controller = new Controller();
 
 test("receives commands test", () => {
   const initalCommands = "f f b";
+  const initalPoint: point = { x: 1, y: 1 };
   const rover: Rover = new Rover(initalPoint, "N", new MarsMap("3 3"));
   rover.move(controller.sendCommands(initalCommands));
   expect(rover.getCommands()).toEqual(initalCommands.split(" "));
@@ -15,6 +15,7 @@ test("receives commands test", () => {
 
 test("Rover wraps around left edge", () => {
   const initalCommands = "l l";
+  const initalPoint: point = { x: 1, y: 1 };
   const rover: Rover = new Rover(initalPoint, "N", new MarsMap("3 3"));
   rover.move(controller.sendCommands(initalCommands));
   expect(rover.getPosition().x).toEqual(3);

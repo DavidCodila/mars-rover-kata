@@ -9,12 +9,7 @@ export class MarsMap extends MapTemplate {
     this.map = [];
     this.rows = Number(mapSize.split(" ")[0]);
     this.columns = Number(mapSize.split(" ")[1]);
-    for (var row = 0; row < this.rows; row++) {
-      this.map[row] = [];
-      for (var column = 0; column < this.columns; column++) {
-        this.map[row][column] = 0;
-      }
-    }
+    this.create2dMap();
   }
   override getMap() {
     return this.map;
@@ -24,5 +19,13 @@ export class MarsMap extends MapTemplate {
   }
   override getMapColumns() {
     return this.columns;
+  }
+  create2dMap() {
+    for (var row = 0; row < this.rows; row++) {
+      this.map[row] = [];
+      for (var column = 0; column < this.columns; column++) {
+        this.map[row][column] = 0;
+      }
+    }
   }
 }
