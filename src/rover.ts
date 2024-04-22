@@ -1,15 +1,19 @@
-import { MarsMap } from "./MarsMap";
+import type { MapTemplate } from "./MapTemplate";
 
 export class Rover {
   private position: point = { x: 1, y: 1 };
   private orientation: string = "N";
   private commands: string[];
-  private MarsMap: MarsMap;
-  constructor(initalPosition: point, initalorientation: string) {
+  private map: MapTemplate;
+  constructor(
+    initalPosition: point,
+    initalorientation: string,
+    map: MapTemplate
+  ) {
     this.position = initalPosition;
     this.orientation = initalorientation;
     this.commands = [""];
-    this.MarsMap = new MarsMap("3 3");
+    this.map = map;
   }
 
   getPosition() {
@@ -28,7 +32,7 @@ export class Rover {
       else if (command === "r") this.position.x++;
       else if (command === "l") {
         if (this.position.x !== 0) this.position.x--;
-        else this.position.x = this.MarsMap.getMapRows();
+        else this.position.x = this.map.getMapRows();
       } else {
         passesCommandSyntax = false;
       }

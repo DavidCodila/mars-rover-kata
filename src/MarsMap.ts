@@ -1,8 +1,11 @@
-export class MarsMap {
+import { MapTemplate } from "./MapTemplate";
+
+export class MarsMap extends MapTemplate {
   private map: Number[][];
   private rows: number;
   private columns: number;
   constructor(mapSize: string) {
+    super();
     this.map = [];
     this.rows = Number(mapSize.split(" ")[0]);
     this.columns = Number(mapSize.split(" ")[1]);
@@ -13,10 +16,13 @@ export class MarsMap {
       }
     }
   }
-  getMap() {
+  override getMap() {
     return this.map;
   }
-  getMapRows() {
+  override getMapRows(): number {
     return this.rows;
+  }
+  override getMapColumns() {
+    return this.columns;
   }
 }
