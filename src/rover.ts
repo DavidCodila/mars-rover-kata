@@ -32,13 +32,17 @@ export class Rover {
     this.commands = commandToMove;
     for (var commandIndex in this.commands) {
       if (this.objectDetected)
-        return "Hit object on " + commandIndex + "command index";
+        //flags before last command
+        return "Will hit object on move " + commandIndex;
       else {
         var command = this.commands[commandIndex];
         this.moveRoverRelativeTo(command);
       }
     }
-    return "Move successful";
+    if (this.objectDetected)
+      //flags last command
+      return "Will hit object on last command";
+    else return "Move successful";
   }
   moveRoverRelativeTo(command: string) {
     if (moveForward(command)) {

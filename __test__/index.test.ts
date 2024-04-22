@@ -45,9 +45,20 @@ test("Rover wraps around bottom edge", () => {
   expect(rover.getPosition().y).toEqual(3);
 });
 
-test("Rover encounters obstacle", () => {
+test("Rover encounters obstacle on last command", () => {
   const initalCommands = "f f l";
   const initalPoint: point = { x: 1, y: 1 };
   const rover: Rover = new Rover(initalPoint, "N", new MarsMap("4 4"));
-  expect(rover.move(controller.sendCommands(initalCommands))).toEqual("Hit");
+  expect(rover.move(controller.sendCommands(initalCommands))).toEqual(
+    "Will hit object on last command"
+  );
+});
+
+test("Rover encounters obstacle on a non last command", () => {
+  const initalCommands = "f f l r";
+  const initalPoint: point = { x: 1, y: 1 };
+  const rover: Rover = new Rover(initalPoint, "N", new MarsMap("4 4"));
+  expect(rover.move(controller.sendCommands(initalCommands))).toEqual(
+    "Will hit object on move 3"
+  );
 });
