@@ -32,8 +32,12 @@ export class Rover {
         else {
           this.position.y = 0;
         }
-      } else if (command === "b") this.position.y--;
-      else if (command === "r") {
+      } else if (command === "b") {
+        if (this.position.y !== 0) this.position.y--;
+        else {
+          this.position.y = this.map.getMapColumns();
+        }
+      } else if (command === "r") {
         if (this.position.x !== this.map.getMapRows() - 1) this.position.x++;
         else {
           this.position.x = 0;
