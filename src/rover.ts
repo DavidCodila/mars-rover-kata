@@ -67,64 +67,110 @@ export class Rover {
   moveRover() {
     switch (this.currentComand) {
       case "forward":
-        this.moveRoverForward();
+        this.moveRoverForwardComand();
         break;
       case "backward":
-        this.moveRoverBackward();
+        this.moveRoverBackwardCommand();
         break;
       case "right":
-        this.moveRoverRight();
+        this.moveRoverRightCommand();
         break;
       case "left":
-        this.moveRoverLeft();
+        this.moveRoverLeftCommand();
         break;
       default:
         console.log("Error in move command: " + this.currentComand);
     }
   }
-  moveRoverForward() {
+  moveRoverForwardComand() {
     if (this.roverIsNotAtTopOfMap()) {
-      if (this.map.hasObstacle(this.position.x, this.position.y + 1))
-        this.objectDetected = true;
-      else this.position.y++;
+      if (this.forwardObsitcleDetected()) this.objectDetected = true;
+      else this.moveRoverForward();
     } else {
-      if (this.map.hasObstacle(this.position.x, 0)) this.objectDetected = true;
-      else this.position.y = 0;
+      if (this.topOfPagToBottomeWrapObsticleDetected())
+        this.objectDetected = true;
+      else this.wrapRoverPositionFromTopOfPageToBottom();
     }
+  }
+  forwardObsitcleDetected(): boolean {
+    return this.map.hasObstacle(this.position.x, this.position.y + 1);
+  }
+  topOfPagToBottomeWrapObsticleDetected(): boolean {
+    return this.map.hasObstacle(this.position.x, 0);
+  }
+  moveRoverForward() {
+    this.position.y++;
+  }
+  wrapRoverPositionFromTopOfPageToBottom() {
+    this.position.y = 0;
+  }
+  moveRoverBackwardCommand() {
+    if (this.roverIsNotAtBottomOfMap()) {
+      if (this.backwardObsitcleDetected()) this.objectDetected = true;
+      else this.moveRoverBackward();
+    } else {
+      if (this.bottomOfPagToTopWrapObsticleDetected())
+        this.objectDetected = true;
+      else this.wrapRoverPositionFromBottomOfPageToTop();
+    }
+  }
+  backwardObsitcleDetected(): boolean {
+    return this.map.hasObstacle(this.position.x, this.position.y - 1);
+  }
+  bottomOfPagToTopWrapObsticleDetected(): boolean {
+    var endOfMap = this.map.getMapColumns() - 1;
+    return this.map.hasObstacle(this.position.x, endOfMap);
   }
   moveRoverBackward() {
-    if (this.roverIsNotAtBottomOfMap()) {
-      if (this.map.hasObstacle(this.position.x, this.position.y - 1))
-        this.objectDetected = true;
-      else this.position.y--;
+    this.position.y--;
+  }
+  wrapRoverPositionFromBottomOfPageToTop() {
+    this.position.y = this.map.getMapColumns();
+  }
+  moveRoverRightCommand() {
+    if (this.roverIsNotAtRightEndOfMap()) {
+      if (this.obsitcleDetectedToTheRight()) this.objectDetected = true;
+      else this.moveRoverRight();
     } else {
-      var endOfMap = this.map.getMapColumns() - 1;
-      if (this.map.hasObstacle(this.position.x, endOfMap))
+      if (this.rightOfPageToLeftWrapObsticleDetected())
         this.objectDetected = true;
-      else this.moveRoverToTopOfMap();
+      else this.wrapRoverPositionFromRightOfPageToLeft();
     }
+  }
+  obsitcleDetectedToTheRight(): boolean {
+    return this.map.hasObstacle(this.position.x + 1, this.position.y);
+  }
+  rightOfPageToLeftWrapObsticleDetected(): boolean {
+    return this.map.hasObstacle(0, this.position.y);
   }
   moveRoverRight() {
-    if (this.roverIssNotAtRightEndOfMap()) {
-      if (this.map.hasObstacle(this.position.x + 1, this.position.y))
-        this.objectDetected = true;
-      else this.position.x++;
+    this.position.x++;
+  }
+  wrapRoverPositionFromRightOfPageToLeft() {
+    this.position.x = 0;
+  }
+  moveRoverLeftCommand() {
+    if (this.roverIsNotAtLeftEndOfMap()) {
+      if (this.obsitcleDetectedToTheLeft()) this.objectDetected = true;
+      else this.moveRoverLeft();
     } else {
-      if (this.map.hasObstacle(0, this.position.y)) this.objectDetected = true;
-      else this.position.x = 0;
+      if (this.leftOfPageToRightWrapObsticleDetected())
+        this.objectDetected = true;
+      else this.wrapRoverPositionFromLeftOfPageToRight();
     }
   }
+  obsitcleDetectedToTheLeft(): boolean {
+    return this.map.hasObstacle(this.position.y, this.position.x - 1);
+  }
+  leftOfPageToRightWrapObsticleDetected(): boolean {
+    var endOfMap = this.map.getMapRows() - 1;
+    return this.map.hasObstacle(endOfMap, this.position.y);
+  }
   moveRoverLeft() {
-    if (this.roverIsNotAtLeftEndOfMap()) {
-      if (this.map.hasObstacle(this.position.y, this.position.x - 1))
-        this.objectDetected = true;
-      else this.position.x--;
-    } else {
-      var endOfMap = this.map.getMapRows() - 1;
-      if (this.map.hasObstacle(endOfMap, this.position.y))
-        this.objectDetected = true;
-      else this.moveRoverToRightEndOfMap();
-    }
+    this.position.x--;
+  }
+  wrapRoverPositionFromLeftOfPageToRight() {
+    this.position.x = this.map.getMapRows();
   }
   roverIsNotAtTopOfMap(): boolean {
     if (this.position.y !== this.map.getMapRows() - 1) return true;
@@ -134,19 +180,13 @@ export class Rover {
     if (this.position.y !== 0) return true;
     return false;
   }
-  roverIssNotAtRightEndOfMap(): boolean {
+  roverIsNotAtRightEndOfMap(): boolean {
     if (this.position.x !== this.map.getMapRows() - 1) return true;
     return false;
   }
   roverIsNotAtLeftEndOfMap(): boolean {
     if (this.position.x !== 0) return true;
     return false;
-  }
-  moveRoverToTopOfMap() {
-    this.position.y = this.map.getMapColumns();
-  }
-  moveRoverToRightEndOfMap() {
-    this.position.x = this.map.getMapRows();
   }
 }
 
