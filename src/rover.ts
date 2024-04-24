@@ -87,7 +87,7 @@ export class Rover {
       if (this.forwardObsitcleDetected()) this.objectDetected = true;
       else this.moveRoverForward();
     } else {
-      if (this.topOfPagToBottomeWrapObsticleDetected())
+      if (this.topOfPageToBottomWrapObsticleDetected())
         this.objectDetected = true;
       else this.wrapRoverPositionFromTopOfPageToBottom();
     }
@@ -95,7 +95,7 @@ export class Rover {
   forwardObsitcleDetected(): boolean {
     return this.map.hasObstacle(this.position.x, this.position.y + 1);
   }
-  topOfPagToBottomeWrapObsticleDetected(): boolean {
+  topOfPageToBottomWrapObsticleDetected(): boolean {
     return this.map.hasObstacle(this.position.x, 0);
   }
   moveRoverForward() {
