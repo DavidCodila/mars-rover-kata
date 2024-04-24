@@ -17,7 +17,6 @@ export class Rover {
     this.commands = [""];
     this.currentComand = "";
     this.map = map;
-    if (map.getMapColumns() === 4) map.createObstacles();
     this.objectDetected = false;
   }
 
